@@ -1,6 +1,4 @@
 # Lector-de-barras
-¡Claro! Aquí tienes una estructura básica para tu archivo **README.md**, adaptada a tu proyecto de lector de códigos de barras con frontend y backend:
-
 ---
 
 # LectorAR: Lector de Códigos de Barras
