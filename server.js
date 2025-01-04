@@ -19,6 +19,9 @@ const pool = new Pool({
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
+    ssl:{
+        rejectUnauthorized: false, // Para evitar errores de certificado SSL
+    },
 });
 
 // Verificar la conexión a la base de datos
