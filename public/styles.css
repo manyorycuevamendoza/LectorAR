@@ -43,7 +43,7 @@ body {
 }
 
 h1 {
-    text-align: center;
+    text-align: left;
     color: #333;
     font-weight: 700;
 }
@@ -194,13 +194,4 @@ p {
     transition: background-color 0.3s ease;
 }
 
-/* Media queries para dispositivos móviles */
-@media (min-width: 768px) {
-    .container {
-        flex-direction: row;
-    }
 
-    .left-column, .right-column {
-        width: 45%;
-    }
-}

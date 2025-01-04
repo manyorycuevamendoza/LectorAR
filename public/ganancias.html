@@ -2,37 +2,42 @@
 <html lang="es">
 <head>
     <title>Ganancias</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Ganancias</h1>
+        <h1 class="text-center">Ganancias</h1>
         <div class="ganancias-diarias">
             <h2>Ganancias Diarias</h2>
-            <p id="daily-earnings-list">0.00</p>
+            <div id="daily-earnings-list" class="row"></div>
         </div>
         <div class="ganancias-momento">
             <h2>Ganancias del Momento</h2>
-            <p id="current-total-sales">0.00</p>
+            <p id="current-total-sales" class="text-center font-weight-bold">0.00</p>
         </div>
     </div>
     <script>
-        fetch('/daily-earnings') // Actualiza esta URL
+        fetch('/daily-earnings')
             .then(response => response.json())
             .then(data => {
                 const dailyEarningsList = document.getElementById('daily-earnings-list');
                 data.forEach(entry => {
                     const earningsItem = document.createElement('div');
-                    earningsItem.className = 'earnings-item';
+                    earningsItem.className = 'earnings-item col-12 col-md-6 col-lg-4';
                     earningsItem.innerHTML = `
-                        <p>Fecha: ${new Date(entry.fecha).toLocaleDateString()}</p>
-                        <p>Total Ganado: $${parseFloat(entry.total_ganado).toFixed(2)}</p>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p><strong>Fecha:</strong> ${new Date(entry.fecha).toLocaleDateString()}</p>
+                                <p><strong>Total Ganado:</strong> $${parseFloat(entry.total_ganado).toFixed(2)}</p>
+                            </div>
+                        </div>
                     `;
                     dailyEarningsList.appendChild(earningsItem);
                 });
             });
 
-        fetch('/total-sales') // Actualiza esta URL
+        fetch('/total-sales')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('No se pudo obtener el total de ventas');

@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Productos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Lista de Productos</h1>
-    <div id="product-list"></div>
+    <div class="container">
+        <h1 class="text-center">Lista de Productos</h1>
+        <div id="product-list" class="row"></div>
+    </div>
     <script>
         fetch('/products')
             .then(response => response.json())
@@ -16,14 +19,18 @@
                 const productList = document.getElementById('product-list');
                 products.forEach(product => {
                     const productItem = document.createElement('div');
-                    productItem.className = 'product-item';
+                    productItem.className = 'product-item col-12 col-md-6 col-lg-4';
                     productItem.innerHTML = `
-                        <p>Código de Barras: ${product.codigo_barras}</p>
-                        <p>Nombre: ${product.nombre}</p>
-                        <p>Cantidad: ${product.cantidad}</p>
-                        <p>Fecha de Vencimiento: ${product.fecha_vencimiento}</p>
-                        <p>Precio: $${product.precio}</p>
-                        <p>Productos Similares: ${product.productos_similares}</p>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p><strong>Código de Barras:</strong> ${product.codigo_barras}</p>
+                                <p><strong>Nombre:</strong> ${product.nombre}</p>
+                                <p><strong>Cantidad:</strong> ${product.cantidad}</p>
+                                <p><strong>Fecha de Vencimiento:</strong> ${product.fecha_vencimiento}</p>
+                                <p><strong>Precio:</strong> $${product.precio}</p>
+                                <p><strong>Productos Similares:</strong> ${product.productos_similares}</p>
+                            </div>
+                        </div>
                     `;
                     productList.appendChild(productItem);
                 });
