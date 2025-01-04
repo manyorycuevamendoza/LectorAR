@@ -23,10 +23,10 @@ El proyecto está dividido en dos partes: el frontend, desplegado en **Netlify**
 ## 🚀 Despliegue
 
 - **Frontend**: [Netlify](https://netlify.app)  
-  URL: [https://tu-proyecto.netlify.app](https://tu-proyecto.netlify.app)
+  URL: [https://thetwogirls.netlify.app](https://tu-proyecto.netlify.app)
 
 - **Backend**: [Render](https://render.com)  
-  URL: [https://tu-backend.onrender.com](https://tu-backend.onrender.com)
+  URL: [https://lectorar.onrender.com/](https://tu-backend.onrender.com)
 
 ---
 
