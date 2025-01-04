@@ -17,7 +17,7 @@
         </div>
     </div>
     <script>
-        fetch('/daily-earnings')
+        fetch('https://tu-backend-url.com/daily-earnings') // Actualiza esta URL
             .then(response => response.json())
             .then(data => {
                 const dailyEarningsList = document.getElementById('daily-earnings-list');
@@ -32,15 +32,13 @@
                 });
             });
 
-        fetch('/current-total-sales')
+        fetch('https://tu-backend-url.com/current-total-sales') // Actualiza esta URL
             .then(response => {
-                
                 if (!response.ok) {
                     throw new Error('No se pudo obtener el total de ventas');
-
-            }
-            return response.json();
-        })
+                }
+                return response.json();
+            })
             .then(data => {
                 document.getElementById('current-total-sales').textContent = 'Total de Ventas: $' + parseFloat(data.total_ventas).toFixed(2);
             })

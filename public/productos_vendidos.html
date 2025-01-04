@@ -11,7 +11,7 @@
     <div id="sold-products-list"></div>
     <p id="total-earnings">Total Ganado: $0</p>
     <script>
-        fetch('/sold-products')
+        fetch('https://tu-backend-url.com/sold-products') // Actualiza esta URL
             .then(response => response.json())
             .then(data => {
                 const soldProductsList = document.getElementById('sold-products-list');

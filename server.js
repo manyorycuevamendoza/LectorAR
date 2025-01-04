@@ -2,8 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const { Pool } = require('pg');
+const cors = require('cors'); // Importar cors
 const app = express();
 const port = 3000;
+
+// Configurar CORS para permitir solicitudes desde Netlify
+app.use(cors({
+    origin: 'https://tu-sitio-en-netlify.netlify.app' // Reemplaza con la URL de tu sitio en Netlify
+}));
 
 // Configurar body-parser para manejar solicitudes POST
 app.use(bodyParser.urlencoded({ extended: true }));
