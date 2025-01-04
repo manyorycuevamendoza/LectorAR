@@ -1,10 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const { Pool } = require('pg');
 const app = express();
 const port = 3000;
-
 
 // Configurar body-parser para manejar solicitudes POST
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -14,11 +14,11 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'abarrotes',
-    password: '76591212',
-    port: 5433,
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
 });
 
 // Verificar la conexión a la base de datos
