@@ -17,7 +17,7 @@
         </div>
     </div>
     <script>
-        fetch('https://tu-backend-url.com/daily-earnings') // Actualiza esta URL
+        fetch('/daily-earnings') // Actualiza esta URL
             .then(response => response.json())
             .then(data => {
                 const dailyEarningsList = document.getElementById('daily-earnings-list');
@@ -32,7 +32,7 @@
                 });
             });
 
-        fetch('https://tu-backend-url.com/current-total-sales') // Actualiza esta URL
+        fetch('/total-sales') // Actualiza esta URL
             .then(response => {
                 if (!response.ok) {
                     throw new Error('No se pudo obtener el total de ventas');
