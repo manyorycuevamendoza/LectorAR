@@ -4,48 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda de Abarrotes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="header">
-        <h1>Las dos niñas</h1>
-        <div class="button-container">
-            <a href="productos.html" class="button">Ver todos los productos</a>
-            <a href="productos_vendidos.html" class="button">Ver productos vendidos</a>
-            <a href="ganancias.html" class="button">Ver ganancias diarias y total de ventas</a>
-        </div>
-    </div>
     <div class="container">
-        <div class="left-column">
-            <div class="scanner">
-                <label for="barcode">Escanear código de barras:</label>
-                <input type="text" id="barcode" autofocus>
-            </div>
-            <div class="product-info" id="product-info">
-                <h2>Información del Producto</h2>
-                <p id="product-name">Nombre: </p>
-                <p id="product-quantity">Cantidad: </p>
-                <p id="product-expiry">Fecha de Vencimiento: </p>
-                <p id="product-price">Precio: </p>
-                <p id="product-similar">Productos Similares: </p>
-                <label for="sell-quantity">Cantidad a vender:</label>
-                <input type="number" id="sell-quantity" min="1">
-                <button id="add-product">Agregar Producto</button>
+        <div class="header row">
+            <h1 class="col-12 text-center">Las dos niñas</h1>
+            <div class="button-container col-12 text-center">
+                <a href="productos.html" class="btn btn-primary m-2">Ver todos los productos</a>
+                <a href="productos_vendidos.html" class="btn btn-primary m-2">Ver productos vendidos</a>
+                <a href="ganancias.html" class="btn btn-primary m-2">Ver ganancias diarias y total de ventas</a>
             </div>
         </div>
-        <div class="right-column">
-            <div class="product-list">
-                <h2>Lista de Productos a Vender</h2>
-                <div id="products"></div>
-                <p id="total-price">Total a Cobrar: $0</p>
-                <label for="customer-payment">Pago del Cliente:</label>
-                <input type="number" id="customer-payment" min="0" step="0.01">
-                <p id="change">Cambio: $0</p>
-                <button id="finalize-sale">Finalizar Venta</button>
+        <div class="row">
+            <div class="left-column col-md-6">
+                <div class="scanner">
+                    <label for="barcode">Escanear código de barras:</label>
+                    <input type="text" id="barcode" class="form-control" autofocus>
+                </div>
+                <div class="product-info" id="product-info">
+                    <h2>Información del Producto</h2>
+                    <p id="product-name">Nombre: </p>
+                    <p id="product-quantity">Cantidad: </p>
+                    <p id="product-expiry">Fecha de Vencimiento: </p>
+                    <p id="product-price">Precio: </p>
+                    <p id="product-similar">Productos Similares: </p>
+                    <label for="sell-quantity">Cantidad a vender:</label>
+                    <input type="number" id="sell-quantity" class="form-control" min="1">
+                    <button id="add-product" class="btn btn-success mt-2">Agregar Producto</button>
+                </div>
+            </div>
+            <div class="right-column col-md-6">
+                <div class="product-list">
+                    <h2>Lista de Productos a Vender</h2>
+                    <div id="products"></div>
+                    <p id="total-price">Total a Cobrar: $0</p>
+                    <label for="customer-payment">Pago del Cliente:</label>
+                    <input type="number" id="customer-payment" class="form-control" min="0" step="0.01">
+                    <p id="change">Cambio: $0</p>
+                    <button id="finalize-sale" class="btn btn-primary mt-2">Finalizar Venta</button>
+                </div>
             </div>
         </div>
     </div>
     <div id="success-message" class="success-message">Compra exitosa</div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         // JavaScript para manejar el escaneo y la gestión de productos
         document.getElementById('barcode').addEventListener('input', function(event) {

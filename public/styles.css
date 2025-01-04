@@ -26,6 +26,7 @@ body {
 
 .container {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     width: 100%;
     max-width: 1350px;
@@ -37,7 +38,7 @@ body {
 }
 
 .left-column, .right-column {
-    width: 45%;
+    width: 100%;
     margin: 0 0px; /* Aumentar margen entre las columnas */
 }
 
@@ -191,4 +192,15 @@ p {
 
 #product-info {
     transition: background-color 0.3s ease;
+}
+
+/* Media queries para dispositivos móviles */
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+    }
+
+    .left-column, .right-column {
+        width: 45%;
+    }
 }
