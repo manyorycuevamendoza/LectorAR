@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos Vendidos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Productos Vendidos</h1>
-    <div id="sold-products-list"></div>
-    <p id="total-earnings">Total Ganado: $0</p>
+    <div class="container">
+        <h1 class="text-center">Productos Vendidos</h1>
+        <div id="sold-products-list" class="row"></div>
+        <p id="total-earnings" class="text-center font-weight-bold">Total Ganado: $0</p>
+    </div>
     <script>
         fetch('/sold-products')
             .then(response => response.json())
@@ -18,13 +21,17 @@
                 let totalEarnings = 0;
                 data.forEach(product => {
                     const productItem = document.createElement('div');
-                    productItem.className = 'product-item';
+                    productItem.className = 'product-item col-12 col-md-6 col-lg-4';
                     productItem.innerHTML = `
-                        <p>Nombre: ${product.nombre}</p>
-                        <p>Cantidad Vendida: ${product.cantidad_vendida}</p>
-                        <p>Precio: $${product.precio}</p>
-                        <p>Total: $${product.total}</p>
-                        <p>Fecha de Venta: ${new Date(product.fecha_venta).toLocaleString()}</p>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p><strong>Nombre:</strong> ${product.nombre}</p>
+                                <p><strong>Cantidad Vendida:</strong> ${product.cantidad_vendida}</p>
+                                <p><strong>Precio:</strong> $${product.precio}</p>
+                                <p><strong>Total:</strong> $${product.total}</p>
+                                <p><strong>Fecha de Venta:</strong> ${new Date(product.fecha_venta).toLocaleString()}</p>
+                            </div>
+                        </div>
                     `;
                     totalEarnings += parseFloat(product.total);
                     soldProductsList.appendChild(productItem);
