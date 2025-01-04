@@ -8,7 +8,7 @@ const port = 3000;
 
 // Configurar CORS para permitir solicitudes desde Netlify
 app.use(cors({
-    origin: 'https://tu-sitio-en-netlify.netlify.app' // Reemplaza con la URL de tu sitio en Netlify
+    origin: 'https://thetwogirls.netlify.app' // Reemplaza con la URL de tu sitio en Netlify
 }));
 
 // Configurar body-parser para manejar solicitudes POST
