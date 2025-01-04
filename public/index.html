@@ -50,7 +50,7 @@
         // JavaScript para manejar el escaneo y la gestión de productos
         document.getElementById('barcode').addEventListener('input', function(event) {
             const barcode = event.target.value;
-            fetch('https://tu-backend-url.com/product/' + barcode) // Actualiza esta URL
+            fetch(`/product/${barcode}`)
                 .then(response => response.json())
                 .then(product => {
                     const productInfo = document.getElementById('product-info');
@@ -107,7 +107,7 @@
                 });
             });
 
-            fetch('https://tu-backend-url.com/finalize-sale', { // Actualiza esta URL
+            fetch('/finalize-sale', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -150,7 +150,7 @@
         }
 
         function fetchTodayEarnings() {
-            fetch('https://tu-backend-url.com/today-earnings') // Actualiza esta URL
+            fetch('/today-earnings')
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('today-earnings').textContent = 'Ganancia Total del Día: $' + data.total_ganado.toFixed(2);
