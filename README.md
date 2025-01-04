@@ -162,6 +162,5 @@ Este proyecto está bajo la licencia **MIT**. Consulta el archivo [LICENSE](LICE
 
 ---
 
-¡Espero que esta estructura te sea útil! 🚀 Si necesitas agregar o ajustar algo, no dudes en decírmelo. 😊
 
 
