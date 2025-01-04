@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Productos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Lista de Productos</h1>
+    <div id="product-list"></div>
+    <script>
+        fetch('/products')
+            .then(response => response.json())
+            .then(products => {
+                const productList = document.getElementById('product-list');
+                products.forEach(product => {
+                    const productItem = document.createElement('div');
+                    productItem.className = 'product-item';
+                    productItem.innerHTML = `
+                        <p>Código de Barras: ${product.codigo_barras}</p>
+                        <p>Nombre: ${product.nombre}</p>
+                        <p>Cantidad: ${product.cantidad}</p>
+                        <p>Fecha de Vencimiento: ${product.fecha_vencimiento}</p>
+                        <p>Precio: $${product.precio}</p>
+                        <p>Productos Similares: ${product.productos_similares}</p>
+                    `;
+                    productList.appendChild(productItem);
+                });
+            });
+    </script>
+</body>
+</html>

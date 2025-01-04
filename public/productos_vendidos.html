@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos Vendidos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Productos Vendidos</h1>
+    <div id="sold-products-list"></div>
+    <p id="total-earnings">Total Ganado: $0</p>
+    <script>
+        fetch('/sold-products')
+            .then(response => response.json())
+            .then(data => {
+                const soldProductsList = document.getElementById('sold-products-list');
+                let totalEarnings = 0;
+                data.forEach(product => {
+                    const productItem = document.createElement('div');
+                    productItem.className = 'product-item';
+                    productItem.innerHTML = `
+                        <p>Nombre: ${product.nombre}</p>
+                        <p>Cantidad Vendida: ${product.cantidad_vendida}</p>
+                        <p>Precio: $${product.precio}</p>
+                        <p>Total: $${product.total}</p>
+                        <p>Fecha de Venta: ${new Date(product.fecha_venta).toLocaleString()}</p>
+                    `;
+                    totalEarnings += parseFloat(product.total);
+                    soldProductsList.appendChild(productItem);
+                });
+                document.getElementById('total-earnings').textContent = 'Total Ganado: $' + totalEarnings.toFixed(2);
+            });
+    </script>
+</body>
+</html>

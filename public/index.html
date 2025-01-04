@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Abarrotes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Las dos niñas</h1>
+        <div class="button-container">
+            <a href="productos.html" class="button">Ver todos los productos</a>
+            <a href="productos_vendidos.html" class="button">Ver productos vendidos</a>
+            <a href="ganancias.html" class="button">Ver ganancias diarias y total de ventas</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="left-column">
+            <div class="scanner">
+                <label for="barcode">Escanear código de barras:</label>
+                <input type="text" id="barcode" autofocus>
+            </div>
+            <div class="product-info" id="product-info">
+                <h2>Información del Producto</h2>
+                <p id="product-name">Nombre: </p>
+                <p id="product-quantity">Cantidad: </p>
+                <p id="product-expiry">Fecha de Vencimiento: </p>
+                <p id="product-price">Precio: </p>
+                <p id="product-similar">Productos Similares: </p>
+                <label for="sell-quantity">Cantidad a vender:</label>
+                <input type="number" id="sell-quantity" min="1">
+                <button id="add-product">Agregar Producto</button>
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="product-list">
+                <h2>Lista de Productos a Vender</h2>
+                <div id="products"></div>
+                <p id="total-price">Total a Cobrar: $0</p>
+                <label for="customer-payment">Pago del Cliente:</label>
+                <input type="number" id="customer-payment" min="0" step="0.01">
+                <p id="change">Cambio: $0</p>
+                <button id="finalize-sale">Finalizar Venta</button>
+            </div>
+        </div>
+    </div>
+    <div id="success-message" class="success-message">Compra exitosa</div>
+    <script>
+        // JavaScript para manejar el escaneo y la gestión de productos
+        document.getElementById('barcode').addEventListener('input', function(event) {
+            const barcode = event.target.value;
+            fetch(`/product/${barcode}`)
+                .then(response => response.json())
+                .then(product => {
+                    const productInfo = document.getElementById('product-info');
+                    if (product) {
+                        document.getElementById('product-name').textContent = 'Nombre: ' + product.name;
+                        document.getElementById('product-quantity').textContent = 'Cantidad: ' + product.quantity;
+                        document.getElementById('product-expiry').textContent = 'Fecha de Vencimiento: ' + product.expiry;
+                        document.getElementById('product-price').textContent = 'Precio: $' + product.price;
+                        document.getElementById('product-similar').textContent = 'Productos Similares: ' + product.similar.join(', ');
+                        productInfo.style.backgroundColor = '#d4edda'; // Cambiar a verde claro
+                    } else {
+                        document.getElementById('product-name').textContent = 'Nombre: ';
+                        document.getElementById('product-quantity').textContent = 'Cantidad: ';
+                        document.getElementById('product-expiry').textContent = 'Fecha de Vencimiento: ';
+                        document.getElementById('product-price').textContent = 'Precio: ';
+                        document.getElementById('product-similar').textContent = 'Productos Similares: ';
+                        productInfo.style.backgroundColor = '#f8d7da'; // Cambiar a rojo claro
+                    }
+                });
+        });
+
+        document.getElementById('add-product').addEventListener('click', function() {
+            const productName = document.getElementById('product-name').textContent.split(': ')[1];
+            const sellQuantity = document.getElementById('sell-quantity').value;
+            const productPrice = parseFloat(document.getElementById('product-price').textContent.split(': ')[1].replace('$', ''));
+            if (productName && sellQuantity) {
+                const productItem = document.createElement('div');
+                productItem.className = 'product-item';
+                productItem.textContent = productName + ' - Cantidad: ' + sellQuantity;
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Eliminar';
+                removeButton.addEventListener('click', function() {
+                    const itemPrice = parseFloat(productItem.getAttribute('data-price'));
+                    updateTotalPrice(-itemPrice);
+                    productItem.remove();
+                });
+                productItem.setAttribute('data-price', productPrice * sellQuantity);
+                productItem.appendChild(removeButton);
+                document.getElementById('products').appendChild(productItem);
+                updateTotalPrice(productPrice * sellQuantity);
+            }
+        });
+
+        document.getElementById('finalize-sale').addEventListener('click', function() {
+            const products = [];
+            document.querySelectorAll('.product-item').forEach(item => {
+                const [name, quantity] = item.textContent.split(' - Cantidad: ');
+                const price = parseFloat(item.getAttribute('data-price')) / parseInt(quantity);
+                products.push({
+                    name,
+                    quantity: parseInt(quantity),
+                    price,
+                    total: parseFloat(item.getAttribute('data-price'))
+                });
+            });
+
+            fetch('/finalize-sale', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(products)
+            }).then(response => {
+                if (response.ok) {
+                    document.getElementById('products').innerHTML = '';
+                    updateTotalPrice(0, true);
+                    document.getElementById('success-message').style.display = 'block';
+                    const finalizeButton = document.getElementById('finalize-sale');
+                    finalizeButton.style.backgroundColor = '#dc3545'; // Cambiar a rojo
+                    setTimeout(() => {
+                        finalizeButton.style.backgroundColor = ''; // Volver al color original
+                        document.getElementById('success-message').style.display = 'none';
+                    }, 3000);
+                    fetchTodayEarnings();
+                } else {
+                    alert('Error al finalizar la venta');
+                }
+            });
+        });
+
+        document.getElementById('customer-payment').addEventListener('input', function() {
+            const totalPrice = parseFloat(document.getElementById('total-price').textContent.split('$')[1]);
+            const customerPayment = parseFloat(document.getElementById('customer-payment').value);
+            const change = customerPayment - totalPrice;
+            document.getElementById('change').textContent = 'Cambio: $' + (change > 0 ? change.toFixed(2) : '0.00');
+        });
+
+        function updateTotalPrice(amount, reset = false) {
+            const totalPriceElement = document.getElementById('total-price');
+            let currentTotal = parseFloat(totalPriceElement.textContent.split('$')[1]);
+            if (reset) {
+                currentTotal = 0;
+            } else {
+                currentTotal += amount;
+            }
+            totalPriceElement.textContent = 'Total a Cobrar: $' + currentTotal.toFixed(2);
+        }
+
+        function fetchTodayEarnings() {
+            fetch('/today-earnings')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('today-earnings').textContent = 'Ganancia Total del Día: $' + data.total_ganado.toFixed(2);
+                });
+        }
+
+        function getProductByBarcode(barcode) {
+            // Simulación de datos de productos
+            const products = {
+                '123456': {
+                    name: 'Producto A',
+                    quantity: 10,
+                    expiry: '2024-01-01',
+                    price: '$10',
+                    similar: ['Producto B', 'Producto C']
+                },
+                '789012': {
+                    name: 'Producto B',
+                    quantity: 5,
+                    expiry: '2023-12-01',
+                    price: '$15',
+                    similar: ['Producto A', 'Producto C']
+                }
+            };
+            return products[barcode] || null;
+        }
+
+        // Obtener la ganancia total del día al cargar la página
+        fetchTodayEarnings();
+    </script>
+</body>
+</html>

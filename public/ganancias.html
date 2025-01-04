@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Ganancias</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Ganancias</h1>
+        <div class="ganancias-diarias">
+            <h2>Ganancias Diarias</h2>
+            <p id="daily-earnings-list">0.00</p>
+        </div>
+        <div class="ganancias-momento">
+            <h2>Ganancias del Momento</h2>
+            <p id="current-total-sales">0.00</p>
+        </div>
+    </div>
+    <script>
+        fetch('/daily-earnings')
+            .then(response => response.json())
+            .then(data => {
+                const dailyEarningsList = document.getElementById('daily-earnings-list');
+                data.forEach(entry => {
+                    const earningsItem = document.createElement('div');
+                    earningsItem.className = 'earnings-item';
+                    earningsItem.innerHTML = `
+                        <p>Fecha: ${new Date(entry.fecha).toLocaleDateString()}</p>
+                        <p>Total Ganado: $${parseFloat(entry.total_ganado).toFixed(2)}</p>
+                    `;
+                    dailyEarningsList.appendChild(earningsItem);
+                });
+            });
+
+        fetch('/current-total-sales')
+            .then(response => {
+                
+                if (!response.ok) {
+                    throw new Error('No se pudo obtener el total de ventas');
+
+            }
+            return response.json();
+        })
+            .then(data => {
+                document.getElementById('current-total-sales').textContent = 'Total de Ventas: $' + parseFloat(data.total_ventas).toFixed(2);
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById('current-total-sales').textContent = 'Total de Ventas: Error al obtener el total';
+            });
+    </script>
+</body>
+</html>
