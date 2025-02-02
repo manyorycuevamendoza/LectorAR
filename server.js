@@ -43,15 +43,14 @@ const soldProducts = [
 app.get('/product/:barcode', async (req, res) => {
     const barcode = req.params.barcode;
     try {
-        const result = await pool.query('SELECT * FROM productos WHERE codigo_barras = $1', [barcode]);
+        const result = await pool.query('SELECT descripcion, sabor, marca, precio FROM productos WHERE codigo_barras = $1', [barcode]);
         if (result.rows.length > 0) {
             const product = result.rows[0];
             res.json({
-                name: product.nombre,
-                quantity: product.cantidad,
-                expiry: product.fecha_vencimiento,
-                price: product.precio,
-                similar: product.productos_similares ? product.productos_similares.split(', ') : []
+                descripcion: product.descripcion,
+                sabor: product.sabor,
+                marca: product.marca,
+                precio: product.precio
             });
         } else {
             res.json(null);
@@ -69,6 +68,18 @@ app.get('/products', async (req, res) => {
         res.json(result.rows);
     } catch (err) {
         console.error(err);
+        res.status(500).send('Error al obtener los productos');
+    }
+});
+
+// Ruta para obtener y mostrar los datos de la tabla productos
+app.get('/show-products', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM productos');
+        console.log(result.rows); // Mostrar los datos en la terminal
+        res.json(result.rows); // Devolver los datos como respuesta
+    } catch (err) {
+        console.error('Error al obtener los productos', err);
         res.status(500).send('Error al obtener los productos');
     }
 });
@@ -165,6 +176,8 @@ app.get('/ganancias-momento', (req, res) => {
         res.json(result.rows[0].gananciasmomento);
     });
 });
+
+
 
 // Ruta para servir el archivo index.html
 app.get('/', (req, res) => {

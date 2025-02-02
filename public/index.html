@@ -27,10 +27,9 @@
                 <div class="product-info" id="product-info">
                     <h2>Información del Producto</h2>
                     <p id="product-name">Nombre: </p>
-                    <p id="product-quantity">Cantidad: </p>
-                    <p id="product-expiry">Fecha de Vencimiento: </p>
+                    <p id="product-sabor">Sabor: </p>
+                    <p id="product-marca">Marca: </p>
                     <p id="product-price">Precio: </p>
-                    <p id="product-similar">Productos Similares: </p>
                     <label for="sell-quantity">Cantidad a vender:</label>
                     <input type="number" id="sell-quantity" class="form-control" min="1">
                     <button id="add-product" class="btn btn-success mt-2">Agregar Producto</button>
@@ -62,18 +61,16 @@
                 .then(product => {
                     const productInfo = document.getElementById('product-info');
                     if (product) {
-                        document.getElementById('product-name').textContent = 'Nombre: ' + product.name;
-                        document.getElementById('product-quantity').textContent = 'Cantidad: ' + product.quantity;
-                        document.getElementById('product-expiry').textContent = 'Fecha de Vencimiento: ' + product.expiry;
-                        document.getElementById('product-price').textContent = 'Precio: $' + product.price;
-                        document.getElementById('product-similar').textContent = 'Productos Similares: ' + product.similar.join(', ');
+                        document.getElementById('product-name').textContent = 'Descripción: ' + product.descripcion;
+                        document.getElementById('product-sabor').textContent = 'Sabor: ' + product.sabor;
+                        document.getElementById('product-marca').textContent = 'Marca: ' + product.marca;
+                        document.getElementById('product-price').textContent = 'Precio: $' + product.precio;
                         productInfo.style.backgroundColor = '#d4edda'; // Cambiar a verde claro
                     } else {
-                        document.getElementById('product-name').textContent = 'Nombre: ';
-                        document.getElementById('product-quantity').textContent = 'Cantidad: ';
-                        document.getElementById('product-expiry').textContent = 'Fecha de Vencimiento: ';
+                        document.getElementById('product-name').textContent = 'Descripción: ';
+                        document.getElementById('product-sabor').textContent = 'Sabor: ';
+                        document.getElementById('product-marca').textContent = 'Marca: ';
                         document.getElementById('product-price').textContent = 'Precio: ';
-                        document.getElementById('product-similar').textContent = 'Productos Similares: ';
                         productInfo.style.backgroundColor = '#f8d7da'; // Cambiar a rojo claro
                     }
                 });
@@ -169,18 +166,10 @@
             const products = {
                 '123456': {
                     name: 'Producto A',
-                    quantity: 10,
-                    expiry: '2024-01-01',
-                    price: '$10',
-                    similar: ['Producto B', 'Producto C']
+                    sabor: 'Sabor A',
+                    marca: 'Marca A',
+                    price: '$10'
                 },
-                '789012': {
-                    name: 'Producto B',
-                    quantity: 5,
-                    expiry: '2023-12-01',
-                    price: '$15',
-                    similar: ['Producto A', 'Producto C']
-                }
             };
             return products[barcode] || null;
         }
