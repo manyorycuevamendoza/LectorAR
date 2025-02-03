@@ -82,10 +82,16 @@
                         } else {
                             showError('Producto no encontrado');
                         }
+                        // Limpiar el input y enfocarlo para el siguiente escaneo
+                        document.getElementById('barcode').value = '';
+                        document.getElementById('barcode').focus();
                     })
                     .catch(err => {
                         console.error(err);
                         showError('Error al obtener el producto');
+                        // Limpiar el input y enfocarlo para el siguiente escaneo
+                        document.getElementById('barcode').value = '';
+                        document.getElementById('barcode').focus();
                     });
             }, 300); // Esperar 300 ms después de la última entrada antes de procesar el código de barras
         }
