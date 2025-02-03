@@ -56,7 +56,7 @@ app.get('/product/:barcode', async (req, res) => {
             res.json(null);
         }
     } catch (err) {
-        console.error(err);
+        console.error('Error al obtener el producto', err);
         res.status(500).send('Error al obtener el producto');
     }
 });
@@ -176,8 +176,6 @@ app.get('/ganancias-momento', (req, res) => {
         res.json(result.rows[0].gananciasmomento);
     });
 });
-
-
 
 // Ruta para servir el archivo index.html
 app.get('/', (req, res) => {

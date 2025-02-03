@@ -53,28 +53,55 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        // JavaScript para manejar el escaneo y la gestión de productos
-        document.getElementById('barcode').addEventListener('input', function(event) {
-            const barcode = event.target.value;
-            fetch(`/product/${barcode}`)
-                .then(response => response.json())
-                .then(product => {
-                    const productInfo = document.getElementById('product-info');
-                    if (product) {
-                        document.getElementById('product-name').textContent = 'Descripción: ' + product.descripcion;
-                        document.getElementById('product-sabor').textContent = 'Sabor: ' + product.sabor;
-                        document.getElementById('product-marca').textContent = 'Marca: ' + product.marca;
-                        document.getElementById('product-price').textContent = 'Precio: $' + product.precio;
-                        productInfo.style.backgroundColor = '#d4edda'; // Cambiar a verde claro
-                    } else {
-                        document.getElementById('product-name').textContent = 'Descripción: ';
-                        document.getElementById('product-sabor').textContent = 'Sabor: ';
-                        document.getElementById('product-marca').textContent = 'Marca: ';
-                        document.getElementById('product-price').textContent = 'Precio: ';
-                        productInfo.style.backgroundColor = '#f8d7da'; // Cambiar a rojo claro
-                    }
-                });
-        });
+        let inputTimeout;
+
+        // Función para manejar el escaneo del código de barras
+        function handleBarcodeInput(event) {
+            const barcode = event.target.value.trim();
+            if (barcode.length === 0) return;
+
+            // Reiniciar el temporizador cada vez que se detecta una nueva entrada
+            clearTimeout(inputTimeout);
+            inputTimeout = setTimeout(() => {
+                // Validar el formato del código de barras (por ejemplo, longitud mínima)
+                if (barcode.length < 8) {
+                    showError('Código de barras inválido');
+                    return;
+                }
+
+                fetch(`/product/${barcode}`)
+                    .then(response => response.json())
+                    .then(product => {
+                        const productInfo = document.getElementById('product-info');
+                        if (product) {
+                            document.getElementById('product-name').textContent = 'Descripción: ' + product.descripcion;
+                            document.getElementById('product-sabor').textContent = 'Sabor: ' + product.sabor;
+                            document.getElementById('product-marca').textContent = 'Marca: ' + product.marca;
+                            document.getElementById('product-price').textContent = 'Precio: $' + product.precio;
+                            productInfo.style.backgroundColor = '#d4edda'; // Cambiar a verde claro
+                        } else {
+                            showError('Producto no encontrado');
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        showError('Error al obtener el producto');
+                    });
+            }, 300); // Esperar 300 ms después de la última entrada antes de procesar el código de barras
+        }
+
+        // Función para mostrar mensajes de error
+        function showError(message) {
+            const productInfo = document.getElementById('product-info');
+            document.getElementById('product-name').textContent = 'Descripción: ';
+            document.getElementById('product-sabor').textContent = 'Sabor: ';
+            document.getElementById('product-marca').textContent = 'Marca: ';
+            document.getElementById('product-price').textContent = 'Precio: ';
+            productInfo.style.backgroundColor = '#f8d7da'; // Cambiar a rojo claro
+            alert(message);
+        }
+
+        document.getElementById('barcode').addEventListener('input', handleBarcodeInput);
 
         document.getElementById('add-product').addEventListener('click', function() {
             const productName = document.getElementById('product-name').textContent.split(': ')[1];
