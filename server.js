@@ -43,13 +43,13 @@ const soldProducts = [
 app.get('/product/:barcode', async (req, res) => {
     const barcode = req.params.barcode;
     try {
-        const result = await pool.query('SELECT descripcion, sabor, marca, precio FROM productos WHERE codigo_barras = $1', [barcode]);
+        const result = await pool.query('SELECT descripcion, sabor, cantidad, precio FROM productos WHERE codigo_barras = $1', [barcode]);
         if (result.rows.length > 0) {
             const product = result.rows[0];
             res.json({
                 descripcion: product.descripcion,
                 sabor: product.sabor,
-                marca: product.marca,
+                cantidad: product.cantidad,
                 precio: product.precio
             });
         } else {

@@ -26,9 +26,9 @@
                 </div>
                 <div class="product-info" id="product-info">
                     <h2>Información del Producto</h2>
-                    <p id="product-name" style="font-size: 1.5em;">Nombre: </p>
+                    <p id="product-name" style="font-size: 1.5em;">Descripción: </p>
                     <p id="product-sabor" style="font-size: 1.5em;">Sabor: </p>
-                    <p id="product-marca" style="font-size: 1.5em;">Marca: </p>
+                    <p id="product-cantidad" style="font-size: 1.5em;">Medida: </p>
                     <p id="product-price" style="font-size: 1.5em;">Precio: </p>
                     <label for="sell-quantity" style="font-size: 1.5em;">Cantidad a vender:</label>
                     <input type="number" id="sell-quantity" class="form-control" min="1">
@@ -76,7 +76,7 @@
                         if (product) {
                             document.getElementById('product-name').textContent = 'Descripción: ' + product.descripcion;
                             document.getElementById('product-sabor').textContent = 'Sabor: ' + product.sabor;
-                            document.getElementById('product-marca').textContent = 'Marca: ' + product.marca;
+                            document.getElementById('product-cantidad').textContent = 'Medida: ' + product.cantidad;
                             document.getElementById('product-price').textContent = 'Precio: $' + product.precio;
                             productInfo.style.backgroundColor = '#d4edda'; // Cambiar a verde claro
                         } else {
@@ -101,7 +101,7 @@
             const productInfo = document.getElementById('product-info');
             document.getElementById('product-name').textContent = 'Descripción: ';
             document.getElementById('product-sabor').textContent = 'Sabor: ';
-            document.getElementById('product-marca').textContent = 'Marca: ';
+            document.getElementById('product-cantidad').textContent = 'Medida: ';
             document.getElementById('product-price').textContent = 'Precio: ';
             productInfo.style.backgroundColor = '#f8d7da'; // Cambiar a rojo claro
             alert(message);
@@ -200,7 +200,7 @@
                 '123456': {
                     name: 'Producto A',
                     sabor: 'Sabor A',
-                    marca: 'Marca A',
+                    cantidad: 'Cantidad A',
                     price: '$10'
                 },
             };
